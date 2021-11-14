@@ -174,6 +174,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -1300,6 +1301,57 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      megaman_12: -8430374177127291492
+      megaman_11: -4974244922683379988
+      megaman_46: 8617223515109640927
+      megaman_41: -2228116525030743845
+      megaman_47: -7958080049830524724
+      megaman_3: -3436638402010850838
+      megaman_33: 8419506674217279071
+      megaman_22: -1399579157637678138
+      megaman_14: -7141315805745326948
+      megaman_16: 7585541589069253088
+      megaman_48: -1087958723078383255
+      megaman_32: -5102532173381922275
+      megaman_31: -8179058805152030290
+      megaman_28: 6307124420216283377
+      megaman_42: 7636077708755985867
+      megaman_20: 8549604156506240704
+      megaman_37: -4635356164159159118
+      megaman_23: 6399420990518643534
+      megaman_45: 8037955656674369036
+      megaman_2: -4280799735105132626
+      megaman_49: -3146271516288795623
+      megaman_27: -6080921661540654342
+      megaman_21: -2509409283837290187
+      megaman_35: 5560589235883687161
+      megaman_40: 2329727235602044894
+      megaman_34: -7161082993080780609
+      megaman_6: 1167060217537761210
+      megaman_18: -8297404022594335140
+      megaman_10: -2390051876051868894
+      megaman_13: 4955803101228726426
+      megaman_25: -228279824579969307
+      megaman_1: -1194286133699934751
+      megaman_26: 3349554426705406375
+      megaman_44: -9158778252313123325
+      megaman_4: -3479955252747988287
+      megaman_36: -8074116911853616773
+      megaman_38: 4945427329559101939
+      megaman_43: -8531150896650653346
+      megaman_5: -5244280776950939149
+      megaman_9: -5532630123933048144
+      megaman_30: 1012688299619394988
+      megaman_15: 4894272199637467181
+      megaman_0: 4447214450015512886
+      megaman_7: -6869773987950756324
+      megaman_8: -1479413579526604112
+      megaman_17: 6161574225529127072
+      megaman_24: -6406552658929891274
+      megaman_19: 4529873522826154548
+      megaman_39: -479120710381496076
+      megaman_29: -2128342209404728171
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

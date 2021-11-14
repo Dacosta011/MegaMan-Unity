@@ -8,6 +8,12 @@ public class MegaMan : MonoBehaviour
     [SerializeField] float jumpSpeed;
     [SerializeField] GameObject bala;
     [SerializeField] float NextFire;
+    [SerializeField] GameObject vfx;
+    [SerializeField] AudioClip sfx_death;
+    [SerializeField] AudioClip sfx_jump;
+    [SerializeField] AudioClip sfx_shoot;
+    [SerializeField] AudioClip sfx_dash;
+    [SerializeField] AudioClip sfx_fall;
 
     Animator myAnimator;
     Rigidbody2D myBody;
@@ -15,7 +21,9 @@ public class MegaMan : MonoBehaviour
     bool dobleSalto;
     float time = 0.0f;
     bool count;
+    bool pause = false;
     float canfire, tamY, tamX;
+    int sound = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,24 +32,33 @@ public class MegaMan : MonoBehaviour
         myCollider = GetComponent<BoxCollider2D>();
         tamY = (GetComponent<SpriteRenderer>()).bounds.size.y;
         tamX = (GetComponent<SpriteRenderer>()).bounds.size.x;
+        //StartCoroutine(ShowTime());
     }
 
     // Update is called once per frame
     void Update()
     {
-        Mover();
-        Saltar();
-        Falling();
-        Fire();
-        Dash();
+        if (!pause)
+        {
+            Mover();
+            Saltar();
+            Falling();
+            Fire();
+            Dash();
+        }
     }
+
 
     void Dash()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             myAnimator.SetBool("dash", true);
-            myBody.AddForce(new Vector2(transform.localScale[0], 0), ForceMode2D.Impulse);
+            myBody.AddForce(new Vector2(transform.localScale[0] > 0 ? 20 : -20, 0), ForceMode2D.Impulse);
+
+            AudioSource.PlayClipAtPoint(sfx_dash, Camera.main.transform.position);
+            
+
         }
     }
     void unDash()
@@ -52,15 +69,17 @@ public class MegaMan : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.X) && Time.time >= canfire)
         {
-            if(transform.localScale[0] == 1)
+            if (transform.localScale[0] == 1)
             {
                 Instantiate(bala, transform.position - new Vector3(-tamX / 2, 0, 0), transform.rotation);
+                AudioSource.PlayClipAtPoint(sfx_shoot, Camera.main.transform.position);
             }
             else
             {
                 Instantiate(bala, transform.position - new Vector3(tamX / 2, 0, 0), transform.rotation);
+                AudioSource.PlayClipAtPoint(sfx_shoot, Camera.main.transform.position);
             }
-            
+
             count = false;
             time = 0.0f;
             myAnimator.SetLayerWeight(1, 1);
@@ -95,7 +114,7 @@ public class MegaMan : MonoBehaviour
     }
     void Saltar()
     {
-        
+
         if (isGrounded())
         {
             myAnimator.SetBool("falling", false);
@@ -103,25 +122,27 @@ public class MegaMan : MonoBehaviour
             {
                 myAnimator.SetTrigger("takeoff");
                 myBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
+                AudioSource.PlayClipAtPoint(sfx_jump, Camera.main.transform.position);
                 dobleSalto = true;
             }
         }
         else
         {
-            if(Input.GetKeyDown(KeyCode.UpArrow) && dobleSalto)
+            if (Input.GetKeyDown(KeyCode.UpArrow) && dobleSalto)
             {
                 myAnimator.SetTrigger("takeoff");
                 myBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
+                AudioSource.PlayClipAtPoint(sfx_jump, Camera.main.transform.position);
                 dobleSalto = false;
             }
         }
-        
+
     }
 
     bool isGrounded()
     {
-        RaycastHit2D ray = Physics2D.Raycast(myCollider.bounds.center, Vector2.down,myCollider.bounds.extents.y + 0.3f,LayerMask.GetMask("Ground"));
-        Debug.DrawRay(myCollider.bounds.center, new Vector2(0, (myCollider.bounds.extents.y + 0.3f)*-1),Color.red);
+        RaycastHit2D ray = Physics2D.Raycast(myCollider.bounds.center, Vector2.down, myCollider.bounds.extents.y + 0.3f, LayerMask.GetMask("Ground"));
+        Debug.DrawRay(myCollider.bounds.center, new Vector2(0, (myCollider.bounds.extents.y + 0.3f) * -1), Color.red);
         return ray.collider != null;
     }
 
@@ -139,7 +160,30 @@ public class MegaMan : MonoBehaviour
         {
             myAnimator.SetBool("falling", true);
         }
-       
+
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == "Enemy" || col.gameObject.tag == "proyectil_malo")
+        {
+            pause = true;
+            StartCoroutine(Die());
+        }
+    }
+    IEnumerator Die()
+    {
+        myBody.isKinematic = true;
+        myAnimator.SetBool("death", true);
+        yield return new WaitForSeconds(1);
+        AudioSource.PlayClipAtPoint(sfx_death, Camera.main.transform.position);
+        Instantiate(vfx, transform.position, transform.rotation);
+        StartCoroutine(GameOver());
+    }
+    IEnumerator GameOver(){
+        yield return new WaitForSeconds(2);
+        Time.timeScale = 0;
+        UIManager.Instance.ShowGameOverScreen();
+    }
+
 }

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - proyectil
   - cuadro
+  - Enemy
+  - ground
+  - proyectil_malo
   layers:
   - Default
   - TransparentFX
@@ -16,9 +19,9 @@ TagManager:
   - Ground
   - player
   - bullet
-  - 
-  - 
-  - 
+  - background
+  - Enemy
+  - enemyBullet
   - 
   - 
   - 
